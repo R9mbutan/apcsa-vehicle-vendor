@@ -7,16 +7,26 @@ public class Car extends Vehicle {
 
 
     //@Override 
-    public double calculateValue(){
-        return 10;
-    }
+    // calculates and sets sellPrice
+    public double calculateValue() {
+        double output = value;
+        output -= 0.15*mileage;
+        output -= (year-2026)*1000;
+        if (isEV) output *= 0.75;
+        if (isStreetLegal) output *= 1.5;
+        return output;
+    } 
 
     //constructor
-    public Car(String mk, String mdl, int yr, int mlg, double bP, double v, String cT, boolean iE, boolean iSL, String dL){
-        super(mk,mdl,yr,mlg,bP,v);
+    public Car(String mk, String mdl, int yr, int mlg, double v, String cT, boolean iE, boolean iSL, String dL){
+        super(mk,mdl,yr,mlg,v);
         this.carType = cT;
         this.isEV = iE;
         this.isStreetLegal = iSL;
         this.drivetrainLayout = dL;
+    }
+    //toString
+    public String toString(){
+        return year + " " + make + " " + model + " (" + drivetrainLayout + ") " + carType +  " with " + mileage + " miles with a market value of $" + value + ((isStreetLegal == false) ? " that is not street legal." : ".");
     }
 }

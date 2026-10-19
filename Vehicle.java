@@ -15,26 +15,27 @@ public class Vehicle {
     }
 
     // calculates and sets sellPrice
-    public double calculateValue(double msrp, int year, int mileage) {
-        return 0.0;
+    public double calculateValue() {
+        return ((value) - (0.15*mileage)) - (year-2026)*1000;
     } 
 
     //buys a vehicle
-    public Vehicle buy(double price, Vehicle whatIsBought) {
+    public Vehicle buy(double msrp, Vehicle whatIsBought) {
+        
         return whatIsBought;
     }
 
     //constructor
-    public Vehicle(String mk, String mdl, int yr, int mlg, double bP, double v) {
+    public Vehicle(String mk, String mdl, int yr, int mlg, /*double bP,*/ double v) {
         this.make = mk;
         this.model = mdl;
         this.year = yr;
         this.mileage = mlg;
-        this.buyPrice = bP;
+        //this.buyPrice = bP;
         this.value = v;
     }
     public String toString(){
-        return "It is a " + year + " " + make + " " + model + " with " + mileage + " miles with a market value of " + value;
+        return year + " " + make + " " + model + " with " + mileage + " miles with a market value of $" + value;
     }
 
 
