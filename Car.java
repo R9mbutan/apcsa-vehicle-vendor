@@ -10,9 +10,11 @@ public class Car extends Vehicle {
     // calculates and sets sellPrice
     public double calculateValue() {
         double output = value;
+        //15 cents per mile
         output -= 0.15*mileage;
-        output -= (year-2026)*1000;
-        if (isEV) output *= 0.75;
+        //1000 bucks down for every year, if EV then lose 1500 bucks for every year
+        output -= (year-2026)*1000*((isEV) ? 1.5 : 1);
+        //not street legal? jack up by 1.5x
         if (isStreetLegal) output *= 1.5;
         return output;
     } 
