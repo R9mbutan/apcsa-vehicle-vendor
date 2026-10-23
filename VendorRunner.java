@@ -1,10 +1,11 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class VendorRunner {
 
     //runner class stuff: 
     //initial capital of $1M
-    public static double vendorMoney = 100000000;
+    public static double vendorMoney = 10^6;
     public static ArrayList<Vehicle> garage = new ArrayList<>(); 
     
     //buys a vehicle (changes money, adds car to garage)
@@ -58,13 +59,13 @@ public class VendorRunner {
         System.out.println(f35);
         Motorcycle vrscr = new Motorcycle("Harley-Davidson", "VRSCR Street Rod", 2007, 20000, 5000, "Harley", 1130);
         System.out.println(vrscr);
-        Car rav4 = new Car("Toyota", "RAV4 Hybrid AWD", 2026, 3800, 36500, "SUV", false, false, "AWD");
+        Car rav4 = new Car("Toyota", "RAV4 Hybrid AWD", 2026, 3800, 36500, "SUV", false, true, "AWD");
         System.out.println(rav4);
         Car taycan = new Car("Porsche", "Taycan Turbo GT with Weissach Package and Manthey Kit", 2026, 0, 370000, "sedan", true, true, "AWD");
         System.out.println(taycan);
         Car mustang = new Car("Ford", "Mustang Dark Horse", 2024, 3949, 64200, "coupe", false, true, "RWD");
         System.out.println(mustang);
-        Rotorcraft ec135 = new Rotorcraft("Airbus", "H135 (EC135)", 2018, 3200, 5700000, false, 1, false);
+        Rotorcraft ec135 = new Rotorcraft("Airbus", "H135 (EC135)", 2018, 3200, 5700000, true, 1, false);
         System.out.println(ec135);
         Rotorcraft ch47 = new Rotorcraft("Boeing", "CH-47F Chinook", 2012, 24500, 32000000, true, 2, false);
         System.out.println(ch47);
@@ -81,6 +82,22 @@ public class VendorRunner {
         System.out.println(getVehicles());
         sell(camry);
         */
+       Scanner s = new Scanner(System.in);
+       String input = "";
+       //MAIN LOOP
+       System.out.println("Welcome");
+       System.out.println("what would you like to buy?");
+       String available = "";
+       for (Vehicle v : garage){
+        available += "\n" + v;
+       }
+       System.out.println("Available cars: "+available);
 
+       while(!input.equals("end")) {
+        System.out.print("input: ");
+        input = s.next(); 
+       }
+       s.close();
+       System.out.println("Ending. Bye bye!");
     }
 }
