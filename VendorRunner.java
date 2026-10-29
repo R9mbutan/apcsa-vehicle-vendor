@@ -26,6 +26,7 @@ public class VendorRunner {
         if (garage.indexOf(whatIsSold) != -1) {
             vendorMoney += whatIsSold.calculateValue();
             garage.remove(whatIsSold);
+            environ.add(whatIsSold);
             System.out.println("You sold " + whatIsSold + ". New balance: $" + vendorMoney);
         }
         else
@@ -75,16 +76,7 @@ public class VendorRunner {
         Rotorcraft ka52 = new Rotorcraft("Kamov", "Ka-52 Alligator", 2011, 17600, 16000000, true, 2, true);
         environ.add(ka52);
 
-        /*
-        buy(p1);
-        buy(camry);
-        buy(mh6);
-        sell(p1);
-        sell(vrscr);
-        buy(taycan);
-        System.out.println(getVehicles());
-        sell(camry);
-        */
+
        Scanner s = new Scanner(System.in);
        String input = "";
        //MAIN LOOP
@@ -104,7 +96,7 @@ public class VendorRunner {
 
             System.out.println("Available cars: " + available);
 
-            System.out.println("You have $" + vendorMoney + ". What would you like to buy? \nPlease input a number: ");
+            System.out.print("You have $" + vendorMoney + ". What would you like to buy? \nPlease input a number: ");
             try {
                 buy(environ.get(s.nextInt()-1));
             } catch (Exception e) {
@@ -113,19 +105,36 @@ public class VendorRunner {
         }
         //SELLING
         if (input.equals("sell")) {
-            try {
-                sell(garage.get(s.nextInt()-1));
-            } catch (Exception e) {
-                System.out.println("invalid input");
+            String gar = "";
+            for (Vehicle v : garage){
+                gar += "\n" + (garage.indexOf(v)+1) + ": " + v;
             }
+
+            if(gar.length()>0) {
+                System.out.print("Your vehicles: " + gar + "\nWhat would you like to sell?\nPlease input a number: ");
+                try {
+                    sell(garage.get(s.nextInt()-1));
+                } catch (Exception e) {
+                    System.out.println("invalid input");
+                }
+            }
+            else System.out.println("Gang, you don't have any vehicles.");
+            
         }
         //VIEWING
-        if (input.equals("see garage")) {
+        if (input.equals("seegarage")) {
             System.out.println(getVehicles());
         } 
+
+        //INJECTING
+        if (input.equals("inject")) {
+            System.out.print("Inject how much?: $");
+            vendorMoney += (s.nextDouble());
+        }
     }
        s.close();
        System.out.println("Ending. Bye bye!");
+       System.out.println("Ending balance: $" + getBalance());
        System.out.println(getVehicles());
     }
 }
