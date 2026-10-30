@@ -16,6 +16,9 @@ public class Vehicle {
     public double calculateValue() {
         return ((value) - (0.15*mileage)) - (year-2026)*1000;
     } 
+    public double getSellValue() {
+        return value;
+    }
 
     //constructor
     public Vehicle(String mk, String mdl, int yr, int mlg, /*double bP,*/ double v) {
@@ -27,6 +30,17 @@ public class Vehicle {
     }
     public String toString(){
         return year + " " + make + " " + model + " with " + mileage + " miles with a market value of $" + value;
+    }
+
+    public String getName(){
+        return make + " " + model + " ($" + formatNum(value) + ")";
+    }
+
+    public static String formatNum(double num){
+        if (num/1000000000 >= 1) return ((double) Math.round(num/1000000)/100)+"B";
+        else if (num/1000000 >= 1) return ((double) Math.round(num/10000)/100)+"M";
+        else if (num/1000 >= 1) return ((double) Math.round(num/10)/100)+"k";
+        else return num + "";
     }
 
 

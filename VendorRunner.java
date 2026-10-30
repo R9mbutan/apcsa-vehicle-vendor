@@ -16,7 +16,7 @@ public class VendorRunner {
             environ.remove(whatIsBought);
             garage.add(whatIsBought);
             
-            System.out.println("You paid $" + whatIsBought.calculateValue() + " to buy " + whatIsBought + ". Remaining balance: $" + vendorMoney);
+            System.out.println("You paid $" + Vehicle.formatNum(whatIsBought.calculateValue()) + " to buy " + whatIsBought + ". Remaining balance: $" + Vehicle.formatNum(vendorMoney));
         }
         else
             System.out.println("You are too broke to afford " + whatIsBought);
@@ -24,10 +24,10 @@ public class VendorRunner {
     //sell
     public static void sell(Vehicle whatIsSold) {
         if (garage.indexOf(whatIsSold) != -1) {
-            vendorMoney += whatIsSold.calculateValue();
+            vendorMoney += whatIsSold.getSellValue();
             garage.remove(whatIsSold);
             environ.add(whatIsSold);
-            System.out.println("You sold " + whatIsSold + ". New balance: $" + vendorMoney);
+            System.out.println("You sold " + whatIsSold + " for $" + Vehicle.formatNum(whatIsSold.getSellValue()) + ". New balance: $" + Vehicle.formatNum(vendorMoney));
         }
         else
             System.out.println("You do not have " + whatIsSold);
@@ -84,8 +84,8 @@ public class VendorRunner {
         environ.add(model3);
         Car corvette = new Car("Chevrolet", "Corvette Z06", 2023, 5200, 112000, "coupe", false, true, "RWD");
         environ.add(corvette);
-        Car 911gt3 = new Car("Porsche", "911 GT3 RS", 2024, 1200, 241000, "coupe", false, true, "RWD");
-        environ.add(911gt3);
+        Car gt3 = new Car("Porsche", "911 GT3 RS", 2024, 1200, 241000, "coupe", false, true, "RWD");
+        environ.add(gt3);
         Car mx5 = new Car("Mazda", "MX-5 Miata", 2022, 14200, 28000, "convertible", false, true, "RWD");
         environ.add(mx5);
         Car gtr = new Car("Nissan", "GT-R Nismo", 2021, 9800, 210000, "coupe", false, true, "AWD");
@@ -147,49 +147,51 @@ public class VendorRunner {
         Plane su30mkk = new Plane("Sukhoi", "Su-30MKK Flanker G", 2020, 0, 53000000, true, "fixed wing", 2, true);
         environ.add(su30mkk);
 
-
+        //Scanner
        Scanner s = new Scanner(System.in);
        String input = "";
        //MAIN LOOP
-       System.out.println("Welcome");
-       System.out.println("what would you like to do?");
+       System.out.println("What would you like to do? \nType HELP for help.");
        
-
+       //exit command
        while(!input.equals("end")) {
-        System.out.print("input: ");
-        input = s.next();
+        System.out.print("Input: ");
+        //support all cases
+        input = s.next().toLowerCase();
         //BUYING
         if (input.equals("buy")) {
+            //show available
             String available = "";
             for (Vehicle v : environ){
-                available += "\n" + (environ.indexOf(v)+1) + ": " + v;
+                available += "\n" + (environ.indexOf(v)+1) + ": " + v.getName();
             }
 
             System.out.println("Available cars: " + available);
 
-            System.out.print("You have $" + vendorMoney + ". What would you like to buy? \nPlease input a number: ");
+            System.out.print("You have $" + (Vehicle.formatNum(vendorMoney))+ ". What would you like to buy? \nInput the corresponding number: ");
             try {
                 buy(environ.get(s.nextInt()-1));
             } catch (Exception e) {
-                System.out.println("invalid input");
+                System.out.println("Invalid input!");
             }
         }
         //SELLING
         if (input.equals("sell")) {
+            //show garage
             String gar = "";
             for (Vehicle v : garage){
-                gar += "\n" + (garage.indexOf(v)+1) + ": " + v;
+                gar += "\n" + (garage.indexOf(v)+1) + ": " + v.getName();
             }
-
+            //if user has vehicle(s)
             if(gar.length()>0) {
-                System.out.print("Your vehicles: " + gar + "\nWhat would you like to sell?\nPlease input a number: ");
+                System.out.print("Your vehicles: " + gar + "\nWhat would you like to sell?\nInput the corresponding number: ");
                 try {
                     sell(garage.get(s.nextInt()-1));
                 } catch (Exception e) {
-                    System.out.println("invalid input");
+                    System.out.println("Invalid input!");
                 }
             }
-            else System.out.println("Gang, you don't have any vehicles.");
+            else System.out.println("You don\'t have any vehicles.");
             
         }
         //VIEWING
@@ -200,12 +202,19 @@ public class VendorRunner {
         //INJECTING
         if (input.equals("inject")) {
             System.out.print("Inject how much?: $");
+            try{
             vendorMoney += (s.nextDouble());
+            System.out.println("New balance: $" + Vehicle.formatNum(vendorMoney));
+            } catch(Exception e) { System.out.println("Not an acceptable number!"); }
+        }
+        //HELP COMMAND
+        if (input.equals("help")) {
+            System.out.println("\n\"BUY\" to browse the selection and buy a vehicle.\n\"SELL\" to sell a vehicle you own.\n\"SEEGARAGE\" to see your vehicles.\n\"INJECT\" if you want to inject cash into your balance.\n\"HELP\" to view this message.\n\"END\" to stop the program.\n");
         }
     }
        s.close();
-       System.out.println("Ending. Bye bye!");
-       System.out.println("Ending balance: $" + getBalance());
+       System.out.println("Ending balance: $" + Vehicle.formatNum(getBalance()));
        System.out.println(getVehicles());
+       System.out.println("Ending. Bye bye!");
     }
 }
